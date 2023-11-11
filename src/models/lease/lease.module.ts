@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { LeaseService } from './lease.service';
 import { LeaseController } from './lease.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Lease } from './entities/lease.entity';
+import { LeaseSchema } from './lease.schema';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Lease])],
+  imports: [
+    MongooseModule.forFeature([{ name: 'Lease', schema: LeaseSchema }]),
+  ],
   controllers: [LeaseController],
   providers: [LeaseService],
 })

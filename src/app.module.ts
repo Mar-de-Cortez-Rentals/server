@@ -5,22 +5,24 @@ import { TenantModule } from './models/tenant/tenant.module';
 import { PropertyModule } from './models/property/property.module';
 import { PaymentModule } from './models/payment/payment.module';
 import { LeaseModule } from './models/lease/lease.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      host: 'localhost',
-      port: 27017,
-      database: 'test',
-      entities: ['dist/**/*.entity{.ts,.js}'],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('DATABASE_URI'),
+      }),
+    }),
+    LeaseModule,
     TenantModule,
     PropertyModule,
     PaymentModule,
-    LeaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,33 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLeaseDto } from './dto/create-lease.dto';
 import { UpdateLeaseDto } from './dto/update-lease.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { MongoRepository } from 'typeorm';
-import { Lease } from './entities/lease.entity';
-
+import { InjectModel } from '@nestjs/mongoose';
+import { Lease } from './lease.schema';
+import { Model } from 'mongoose';
 @Injectable()
 export class LeaseService {
   constructor(
-    @InjectRepository(Lease)
-    private readonly leaseRepository: MongoRepository<Lease>,
+    @InjectModel(Lease.name) private readonly leaseModel: Model<Lease>,
   ) {}
-  create(createLeaseDto: CreateLeaseDto) {
-    return 'This action adds a new lease';
+
+  async create(createLeaseDto: CreateLeaseDto): Promise<Lease> {
+    const lease = new this.leaseModel(createLeaseDto);
+    return lease.save();
   }
 
-  findAll() {
-    return `This action returns all lease`;
+  async findAll(): Promise<Lease[]> {
+    return this.leaseModel.find().populate('tenant').exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} lease`;
+  async findOne(id: number): Promise<Lease> {
+    return this.leaseModel.findById(id).populate('tenant').exec();
   }
 
-  update(id: number, updateLeaseDto: UpdateLeaseDto) {
-    return `This action updates a #${id} lease`;
+  async update(id: number, updateLeaseDto: UpdateLeaseDto): Promise<Lease> {
+    const updatedLease = await this.leaseModel.findByIdAndUpdate(
+      id,
+      updateLeaseDto,
+    );
+    return updatedLease;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} lease`;
+  async remove(id: number): Promise<Lease> {
+    const deletedLease = await this.leaseModel.findByIdAndRemove(id);
+    return deletedLease;
   }
 }

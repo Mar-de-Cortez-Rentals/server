@@ -16,27 +16,30 @@ export class LeaseController {
   constructor(private readonly leaseService: LeaseService) {}
 
   @Post()
-  create(@Body() createLeaseDto: CreateLeaseDto) {
+  async create(@Body() createLeaseDto: CreateLeaseDto) {
     return this.leaseService.create(createLeaseDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.leaseService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.leaseService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLeaseDto: UpdateLeaseDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateLeaseDto: UpdateLeaseDto,
+  ) {
     return this.leaseService.update(+id, updateLeaseDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.leaseService.remove(+id);
   }
 }

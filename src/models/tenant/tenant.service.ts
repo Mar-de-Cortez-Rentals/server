@@ -1,26 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
+import { Tenant } from './tenant.schema';
 
 @Injectable()
 export class TenantService {
-  create(createTenantDto: CreateTenantDto) {
-    return 'This action adds a new tenant';
+  constructor(
+    @InjectModel(Tenant.name)
+    private readonly tenantModel: Model<Tenant>,
+  ) {}
+
+  async create(createTenantDto: CreateTenantDto): Promise<Tenant> {
+    createTenantDto.move_in_date = new Date();
+
+    const tenant = new this.tenantModel(createTenantDto);
+
+    console.log(tenant);
+    return tenant.save();
   }
 
-  findAll() {
-    return `This action returns all tenant`;
+  async findAll(): Promise<Tenant[]> {
+    return this.tenantModel.find().populate('contact_info').exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tenant`;
+  async findOne(id: string): Promise<Tenant> {
+    return this.tenantModel.findById(id).populate('contact_info').exec();
   }
 
-  update(id: number, updateTenantDto: UpdateTenantDto) {
-    return `This action updates a #${id} tenant`;
+  async update(id: string, updateTenantDto: UpdateTenantDto): Promise<Tenant> {
+    const updatedTenant = await this.tenantModel.findByIdAndUpdate(
+      id,
+      updateTenantDto,
+    );
+
+    return updatedTenant;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tenant`;
+  async remove(id: string): Promise<Tenant> {
+    const deletedTenant = await this.tenantModel.findByIdAndRemove(id);
+
+    return deletedTenant;
   }
 }
