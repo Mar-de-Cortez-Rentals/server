@@ -1,16 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { Property } from 'src/models/property/property.entity';
-import { Tenant } from 'src/models/tenant/tenant.schema';
+import { Document, Types } from 'mongoose';
+import { Property } from '../../property/property.entity';
+import { Tenant } from '../../tenant/tenant.schema';
 
 export type PaymentDocument = Payment & Document;
 
 @Schema()
 export class Payment {
-  @Prop({ type: Property, required: true })
+  @Prop({ type: Types.ObjectId, ref: Property.name, required: true })
   property: Property;
 
-  @Prop({ type: Tenant, required: true })
+  @Prop({ type: Types.ObjectId, ref: Tenant.name, required: true })
   tenant: Tenant;
 
   @Prop({ type: String, required: true })

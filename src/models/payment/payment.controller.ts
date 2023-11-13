@@ -1,7 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PaymentService } from './payment.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { PaymentService } from './payment.service';
 
 @Controller('payment')
 export class PaymentController {
@@ -12,9 +20,13 @@ export class PaymentController {
     return this.paymentService.create(createPaymentDto);
   }
 
-  @Get()
-  findAll() {
-    return this.paymentService.findAll();
+  @Get('/:offset/:take')
+  findAll(
+    @Param('offset') offset: string,
+    @Param('take') take: string,
+    @Body() query: Partial<CreatePaymentDto>,
+  ) {
+    return this.paymentService.findAll(query);
   }
 
   @Get(':id')

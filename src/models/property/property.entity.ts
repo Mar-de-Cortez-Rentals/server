@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Tenant } from '../tenant/tenant.schema';
 
 export type PropertyDocument = Property & Document;
 
 class Rent {
-  @Prop({ type: Types.ObjectId, ref: 'Tenant' })
+  @Prop({ type: Types.ObjectId, ref: Tenant.name })
   tenant: Tenant;
 
   @Prop({ type: Date })
