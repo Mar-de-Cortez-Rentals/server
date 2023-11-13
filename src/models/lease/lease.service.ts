@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateLeaseDto } from './dto/create-lease.dto';
 import { UpdateLeaseDto } from './dto/update-lease.dto';
-import { InjectModel } from '@nestjs/mongoose';
 import { Lease } from './lease.schema';
-import { Model } from 'mongoose';
+import { LeaseUtils } from './utils/lease.utils';
 @Injectable()
 export class LeaseService {
   constructor(
     @InjectModel(Lease.name) private readonly leaseModel: Model<Lease>,
+    private readonly leaseUtils: LeaseUtils,
   ) {}
 
   async create(createLeaseDto: CreateLeaseDto): Promise<Lease> {
@@ -15,8 +17,15 @@ export class LeaseService {
     return lease.save();
   }
 
-  async findAll(): Promise<Lease[]> {
-    return this.leaseModel.find().populate('tenant').exec();
+  async findAll(
+    offset: number,
+    take: number,
+    query: Partial<Lease>,
+  ): Promise<Lease[]> {
+    return this.leaseModel
+      .find(await this.leaseUtils.buildQuery(query))
+      .populate('tenant')
+      .exec();
   }
 
   async findOne(id: number): Promise<Lease> {

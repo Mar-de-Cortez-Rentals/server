@@ -1,16 +1,16 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { TenantService } from './tenant.service';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
 import { Tenant } from './tenant.schema';
+import { TenantService } from './tenant.service';
 
 @Controller('tenant')
 export class TenantController {
@@ -21,9 +21,15 @@ export class TenantController {
     return this.tenantService.create(createTenantDto);
   }
 
-  @Get()
-  async findAll(): Promise<Tenant[]> {
-    return this.tenantService.findAll();
+  @Get('/:offset/:take')
+  async findAll(
+    @Param('offset') offset: number,
+    @Param('take') take: number,
+
+    //Dont know if this is the best way to do this, could be GetAllTenantsDto
+    @Body() body: Partial<Tenant>,
+  ): Promise<Tenant[]> {
+    return this.tenantService.findAll(offset, take, body);
   }
 
   @Get(':id')

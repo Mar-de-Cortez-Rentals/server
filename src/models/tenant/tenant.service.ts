@@ -21,8 +21,12 @@ export class TenantService {
     return tenant.save();
   }
 
-  async findAll(): Promise<Tenant[]> {
-    return this.tenantModel.find().populate('contact_info').exec();
+  async findAll(
+    offset: number,
+    take: number,
+    body: Partial<Tenant>,
+  ): Promise<Tenant[]> {
+    return this.tenantModel.find().skip(offset).limit(take).exec();
   }
 
   async findOne(id: string): Promise<Tenant> {

@@ -1,15 +1,16 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { LeaseService } from './lease.service';
 import { CreateLeaseDto } from './dto/create-lease.dto';
 import { UpdateLeaseDto } from './dto/update-lease.dto';
+import { Lease } from './lease.schema';
+import { LeaseService } from './lease.service';
 
 @Controller('lease')
 export class LeaseController {
@@ -20,9 +21,13 @@ export class LeaseController {
     return this.leaseService.create(createLeaseDto);
   }
 
-  @Get()
-  async findAll() {
-    return this.leaseService.findAll();
+  @Get('/:offset/:take')
+  async findAll(
+    @Param('offset') offset: number,
+    @Param('take') take: number,
+    @Body() body: Partial<Lease>,
+  ) {
+    return this.leaseService.findAll(offset, take, body);
   }
 
   @Get(':id')

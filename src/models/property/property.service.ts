@@ -1,15 +1,27 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
+import { Property } from './property.entity';
+import { PropertyUtils } from './utils/property.utils';
 
-@Injectable()
+@Injectable({})
 export class PropertyService {
+  constructor(
+    @InjectModel(Property.name) private propertyModel: Model<Property>,
+    private propertyUtils: PropertyUtils,
+  ) {}
+
   create(createPropertyDto: CreatePropertyDto) {
     return 'This action adds a new property';
   }
 
-  findAll() {
-    return `This action returns all property`;
+  async findAll(offset: number, take: number, body: Partial<Property>) {
+    return this.propertyModel
+      .find(await this.propertyUtils.buildQuery(body))
+      .skip(offset)
+      .limit(take);
   }
 
   findOne(id: number) {
