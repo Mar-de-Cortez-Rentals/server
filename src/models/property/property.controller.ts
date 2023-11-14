@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
-import { Property } from './property.entity';
+import { Property } from './property.schema';
 import { PropertyService } from './property.service';
 
 @Controller('property')

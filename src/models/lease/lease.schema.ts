@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
-import { Property } from '../property/property.entity';
+import { Property } from '../property/property.schema';
 import { Tenant } from 'src/models/tenant/tenant.schema';
 
 export type LeaseDocument = HydratedDocument<Lease>;

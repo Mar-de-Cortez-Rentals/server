@@ -7,6 +7,7 @@ import { LeaseModule } from './models/lease/lease.module';
 import { PaymentModule } from './models/payment/payment.module';
 import { PropertyModule } from './models/property/property.module';
 import { TenantModule } from './models/tenant/tenant.module';
+import { TestingModule } from '@nestjs/testing';
 
 @Module({
   imports: [
@@ -23,8 +24,9 @@ import { TenantModule } from './models/tenant/tenant.module';
     TenantModule,
     PropertyModule,
     PaymentModule,
+    TestingModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ConfigService],
 })
 export class AppModule {}

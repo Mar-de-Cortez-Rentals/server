@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Lease } from 'src/models/lease/lease.schema';
-import { Property } from '../property.entity';
+import { Property } from '../property.schema';
 
 @Injectable()
 export class PropertyUtils {

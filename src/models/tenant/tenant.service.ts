@@ -16,16 +16,10 @@ export class TenantService {
     createTenantDto.move_in_date = new Date();
 
     const tenant = new this.tenantModel(createTenantDto);
-
-    console.log(tenant);
     return tenant.save();
   }
 
-  async findAll(
-    offset: number,
-    take: number,
-    body: Partial<Tenant>,
-  ): Promise<Tenant[]> {
+  async findAll(offset: number, take: number): Promise<Tenant[]> {
     return this.tenantModel.find().skip(offset).limit(take).exec();
   }
 
@@ -42,9 +36,17 @@ export class TenantService {
     return updatedTenant;
   }
 
-  async remove(id: string): Promise<Tenant> {
-    const deletedTenant = await this.tenantModel.findByIdAndRemove(id);
+  async remove(id: string): Promise<{ tenant: Tenant; success: boolean }> {
+    const tenant = await this.tenantModel.findById(id);
+    if (!tenant) {
+      return { tenant: null, success: false };
+    }
 
-    return deletedTenant;
+    const deletedTenant = await this.tenantModel.deleteOne({ _id: id });
+
+    if (deletedTenant.deletedCount < 1) {
+      return { tenant: null, success: false };
+    }
+    return { tenant: tenant, success: true };
   }
 }

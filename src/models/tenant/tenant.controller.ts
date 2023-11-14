@@ -27,9 +27,8 @@ export class TenantController {
     @Param('take') take: number,
 
     //Dont know if this is the best way to do this, could be GetAllTenantsDto
-    @Body() body: Partial<Tenant>,
   ): Promise<Tenant[]> {
-    return this.tenantService.findAll(offset, take, body);
+    return this.tenantService.findAll(offset, take);
   }
 
   @Get(':id')
@@ -46,7 +45,9 @@ export class TenantController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<Tenant> {
+  async remove(
+    @Param('id') id: string,
+  ): Promise<{ tenant: Tenant; success: boolean }> {
     return this.tenantService.remove(id);
   }
 }
