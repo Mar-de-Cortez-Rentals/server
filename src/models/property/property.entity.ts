@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { Tenant } from '../tenant/tenant.schema';
 
 export type PropertyDocument = Property & Document;
@@ -23,8 +23,8 @@ class Rent {
 
 @Schema()
 export class Property {
-  @Prop({ type: Types.ObjectId, auto: true })
-  _id: Types.ObjectId;
+  @Prop({ type: MongooseSchema.Types.ObjectId, auto: true })
+  _id: MongooseSchema.Types.ObjectId;
 
   @Prop({ required: true })
   name: string;
