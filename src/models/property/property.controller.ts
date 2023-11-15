@@ -18,7 +18,12 @@ export class PropertyController {
 
   @Post()
   create(@Body() createPropertyDto: CreatePropertyDto) {
-    return this.propertyService.create(createPropertyDto);
+    try {
+      console.log(createPropertyDto);
+      return this.propertyService.create(createPropertyDto);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   @Get('/:offset/:take')

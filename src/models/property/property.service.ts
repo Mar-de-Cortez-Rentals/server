@@ -13,10 +13,8 @@ export class PropertyService {
     private propertyUtils: PropertyUtils,
   ) {}
 
-  async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-    const property = new this.propertyModel(createPropertyDto);
-    console.log(property);
-    return property.save();
+  create(createPropertyDto: CreatePropertyDto) {
+    return this.propertyModel.create(createPropertyDto);
   }
 
   async findAll(
