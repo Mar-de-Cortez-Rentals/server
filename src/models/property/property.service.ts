@@ -15,6 +15,7 @@ export class PropertyService {
 
   async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
     const property = new this.propertyModel(createPropertyDto);
+    console.log(property);
     return property.save();
   }
 
@@ -29,11 +30,14 @@ export class PropertyService {
       .limit(take);
   }
 
-  findOne(id: number) {
+  async findOne(id: number): Promise<Property> {
     return this.propertyModel.findById(id).populate('rents').exec();
   }
 
-  update(id: number, updatePropertyDto: UpdatePropertyDto) {
+  async update(
+    id: number,
+    updatePropertyDto: UpdatePropertyDto,
+  ): Promise<Property> {
     const updatedProperty = this.propertyModel.findByIdAndUpdate(
       id,
       updatePropertyDto,
@@ -42,7 +46,17 @@ export class PropertyService {
     return updatedProperty;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} property`;
+  async remove(id: string): Promise<{ property: Property; success: boolean }> {
+    const property = await this.propertyModel.findById(id);
+    if (!property) {
+      return { property: null, success: false };
+    }
+
+    const deletedTenant = await this.propertyModel.deleteOne({ _id: id });
+
+    if (deletedTenant.deletedCount < 1) {
+      return { property: null, success: false };
+    }
+    return { property: property, success: true };
   }
 }
