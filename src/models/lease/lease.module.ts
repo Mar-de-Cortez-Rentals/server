@@ -10,6 +10,7 @@ import { LeaseUtils } from './utils/lease.utils';
   imports: [
     MongooseModule.forFeature([{ name: 'Lease', schema: LeaseSchema }]),
     MongooseModule.forFeature([{ name: 'Tenant', schema: TenantSchema }]),
+    MongooseModule.forFeature([{ name: 'Property', schema: LeaseSchema }]),
   ],
   controllers: [LeaseController],
   providers: [LeaseService, LeaseUtils],

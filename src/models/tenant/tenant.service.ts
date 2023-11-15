@@ -15,6 +15,8 @@ export class TenantService {
   async create(createTenantDto: CreateTenantDto): Promise<Tenant> {
     createTenantDto.move_in_date = new Date();
 
+    console.log(createTenantDto);
+
     const tenant = new this.tenantModel(createTenantDto);
     return tenant.save();
   }

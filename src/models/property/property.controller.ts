@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
@@ -30,11 +31,11 @@ export class PropertyController {
   findAll(
     @Param('offset') offset: number,
     @Param('take') take: number,
-
     //Dont know if this is the best way to do this, could be GetAllPropertiesDto
-    @Body() body: Partial<Property>,
+    @Query() query: Partial<Property>,
   ) {
-    return this.propertyService.findAll(offset, take, body);
+    console.log(query);
+    return this.propertyService.findAll(offset, take, query);
   }
 
   @Get(':id')

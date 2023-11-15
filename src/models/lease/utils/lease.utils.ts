@@ -1,16 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Property } from 'src/models/property/property.entity';
 import { Tenant } from 'src/models/tenant/tenant.schema';
 import { Lease } from '../lease.schema';
 
 @Injectable()
 export class LeaseUtils {
-  constructor(@InjectModel(Tenant.name) private tenantModel: Model<Tenant>) {}
+  constructor(
+    @InjectModel(Tenant.name) private tenantModel: Model<Tenant>,
+    @InjectModel(Property.name) private propertyModel: Model<Property>,
+  ) {}
 
   //query could be typed with GetAllTenantsDto
   async buildQuery(query: Partial<Lease>) {
     const queryBuilt = {};
+
+    if (query['property_name']) {
+      const propertyName = query['property_name'];
+
+      const propertyRegex = new RegExp(propertyName, 'i');
+
+      queryBuilt['property'] = propertyRegex;
+    }
 
     if (query['tenant_name']) {
       const tenantName = query['tenant_name'];
@@ -29,6 +41,14 @@ export class LeaseUtils {
 
       // Use the found tenant IDs in the lease query
       queryBuilt['tenant'] = { $in: tenantIds };
+    }
+
+    if (query['lease_start_date']) {
+      const leaseStartDate = query['lease_start_date'];
+      queryBuilt['lease_start_date'] = {
+        $gte: leaseStartDate[0],
+        $lte: leaseStartDate[1],
+      };
     }
 
     return queryBuilt;

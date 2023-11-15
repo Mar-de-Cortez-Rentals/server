@@ -4,10 +4,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LeaseModule } from './models/lease/lease.module';
+import { NotifcationsModule } from './models/notifcations/notifcations.module';
 import { PaymentModule } from './models/payment/payment.module';
 import { PropertyModule } from './models/property/property.module';
 import { TenantModule } from './models/tenant/tenant.module';
-import { TestingModule } from '@nestjs/testing';
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { TestingModule } from '@nestjs/testing';
     TenantModule,
     PropertyModule,
     PaymentModule,
-    TestingModule,
+    NotifcationsModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

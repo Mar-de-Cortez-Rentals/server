@@ -21,11 +21,14 @@ export class LeaseService {
     offset: number,
     take: number,
     query: Partial<Lease>,
-  ): Promise<Lease[]> {
-    return this.leaseModel
-      .find(await this.leaseUtils.buildQuery(query))
-      .populate('tenant')
-      .exec();
+  ): Promise<{ data: Lease[]; count: number }> {
+    return {
+      data: await this.leaseModel
+        .find(await this.leaseUtils.buildQuery(query))
+        .populate('tenant')
+        .exec(),
+      count: await this.leaseModel.countDocuments(query),
+    };
   }
 
   async findOne(id: number): Promise<Lease> {
