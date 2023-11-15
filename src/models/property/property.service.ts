@@ -20,10 +20,10 @@ export class PropertyService {
   async findAll(
     offset: number,
     take: number,
-    body: Partial<Property>,
+    query: Partial<Property>,
   ): Promise<Property[]> {
     return this.propertyModel
-      .find(await this.propertyUtils.buildQuery(body))
+      .find(await this.propertyUtils.buildQuery(query))
       .skip(offset)
       .limit(take);
   }

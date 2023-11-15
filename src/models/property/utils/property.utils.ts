@@ -15,7 +15,7 @@ export class PropertyUtils {
     const queryBuilt = {};
 
     if (query.name) {
-      queryBuilt['name'] = new RegExp(query.type, 'i');
+      queryBuilt['name'] = new RegExp(query.name, 'i');
     }
 
     if (query.address) {
