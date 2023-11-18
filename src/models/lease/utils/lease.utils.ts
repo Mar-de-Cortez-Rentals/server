@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Property } from 'src/models/property/property.entity';
 import { Tenant } from 'src/models/tenant/tenant.schema';
 import { Lease } from '../lease.schema';
 
@@ -9,8 +8,8 @@ import { Lease } from '../lease.schema';
 export class LeaseUtils {
   constructor(
     @InjectModel(Tenant.name) private tenantModel: Model<Tenant>,
-    @InjectModel(Property.name) private propertyModel: Model<Property>,
-  ) {}
+  ) /* @InjectModel(Property.name) private propertyModel: Model<Property>, */
+  {}
 
   //query could be typed with GetAllTenantsDto
   async buildQuery(query: Partial<Lease>) {

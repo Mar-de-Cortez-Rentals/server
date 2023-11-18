@@ -13,17 +13,6 @@ export class Property {
 
   @Prop({ required: true })
   type: string;
-
-  @Prop([
-    {
-      type: { type: String, required: true },
-      amount: { type: Number, required: true },
-    },
-  ])
-  rents: {
-    type: string;
-    amount: number;
-  }[];
 }
 
 export const PropertySchema = SchemaFactory.createForClass(Property);

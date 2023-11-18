@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './property.schema';
 import { PropertyUtils } from './utils/property.utils';
@@ -13,7 +12,7 @@ export class PropertyService {
     private propertyUtils: PropertyUtils,
   ) {}
 
-  create(createPropertyDto: CreatePropertyDto) {
+  create(createPropertyDto: any) {
     return this.propertyModel.create(createPropertyDto);
   }
 
