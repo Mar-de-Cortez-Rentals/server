@@ -26,6 +26,7 @@ export class LeaseService {
       data: await this.leaseModel
         .find(await this.leaseUtils.buildQuery(query))
         .populate('tenant')
+        .populate('property')
         .exec(),
       count: await this.leaseModel.countDocuments(query),
     };

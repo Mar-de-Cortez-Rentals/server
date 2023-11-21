@@ -14,7 +14,8 @@ export class PropertyService {
   ) {}
 
   create(createPropertyDto: CreatePropertyDto) {
-    return this.propertyModel.create(createPropertyDto);
+    const property = new this.propertyModel(createPropertyDto);
+    return property.save();
   }
 
   async findAll(
@@ -33,7 +34,7 @@ export class PropertyService {
   }
 
   async update(
-    id: number,
+    id: string,
     updatePropertyDto: UpdatePropertyDto,
   ): Promise<Property> {
     const updatedProperty = this.propertyModel.findByIdAndUpdate(
