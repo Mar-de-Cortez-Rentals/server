@@ -17,7 +17,7 @@ import { TenantModule } from './models/tenant/tenant.module';
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('DATABASE_URI'),
+        uri: 'mongodb://root:example@mongodb:27017',
       }),
     }),
     LeaseModule,
